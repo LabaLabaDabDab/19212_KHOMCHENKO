@@ -1,78 +1,274 @@
 #include <iostream>
-#include <ostream>
-using namespace std;
+#include <string>
+#include <cmath>
+#include <search.h>
+#include <cassert>
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
-class Array{
-private:
-    int size; //размер массива
-    int *ptr; //указатель на массив
-public:
-    Array(); //конструктор без параметров
-    Array( const Array & ); // оператор копирования
-    const Array &operator= (const Array &); //оператор присваивания
-    void setArray(); //вставка в массив
-    void getArray(); //вывод массива
-    ~Array(); //очистка массива
-    int operator[](int idx); //поиск элемента в массиве по индексу через ссылку
+using testing::Eq;
+
+typedef std::string Key;
+
+struct Value {
+    unsigned age;
+    unsigned weight;
+
+    friend bool operator == (const Value& a, const Value& b){
+        return  a.age == b.age && a.weight == b.weight;
+    }
+    friend bool operator != (const Value& a, const Value& b){
+        return  !(a == b);
+    }
 };
 
-Array::Array(){ // конструктор по умолчанию, без параметров
-    size = 10;
-    ptr = new int [size]; // выделить место в памяти для массива
-    for (int i = 0; i < size; i++) // обнуляем массив
-        ptr[i] = 0;
-}
+struct Node{
+    Node *next;
+    Value val;
+    Key key;
+};
 
-Array::Array( const Array &ArrayToCopy ):size(ArrayToCopy.size){ //оператор копирования
-    ptr = new int [size]; // выделить место в памяти для массива
-    for (int i = 0; i < size; i++)
-        ptr[i] = ArrayToCopy.ptr[i]; // заполняем массив значениями массива arrayToCopy
-}
+class HashTable {
+    Value def;
+    size_t size_;
+    Node **array;
+public:
+    HashTable() {
+        def = {0,0};
+        size_ = 0;
+        array = nullptr;
+    }
 
-const Array &Array::operator= (const Array &right){ //оператор присваивания
-    if (&right != this){ //чтобы не выполнилось не присвоилось само в себя
-        if (size != right.size){
-            delete [] ptr; //освободить пространство
-            size = right.size; //установить нужный размер массива
-            ptr = new int [size]; //выделить память под копируемый массив
+    ~HashTable(){
+        for (int i = 0; i < size_; ++i) {
+            if (array[i])
+                delete array[i];
         }
-        for (int i = 0; i < size; i++) {
-            ptr[i] = right.ptr[i]; //скопировать массив
+        delete[] array;
+    }
+
+    HashTable(const HashTable& b){
+        def = {0,0};
+        size_ = b.size_;
+        array = new Node*[size_];
+        for (int i = 0; i < size_; i++) {
+            array[i] = nullptr;
+        }
+        Node* current;
+        for (int j = 0; j < size_; ++j) {
+            current = b.array[j];
+            while (current != nullptr) {
+                insert(current->key, current->val);
+                current = current->next;
+            }
         }
     }
-    return *this;
-}
-
-int Array::operator[](int idx){ //поиск элемента в массиве по индексу через ссылку
-    return ptr[idx];
-}
-
-void Array::setArray(){ // заполнение массива
-    for (int i = 0; i < size; i++)
-        cin >> ptr[i];
-}
-
-void Array::getArray(){ //вывод массива
-    for (int i = 0; i < size; ++i){
-        cout << ptr[i] << " ";
+    void swap(HashTable& b){
+        std::swap(*this, b);
     }
-    cout << endl;
+
+    HashTable& operator=(const HashTable& b){
+        if (&b != this){
+            if (size_ != b.size_){
+                delete [] array;
+                size_ = b.size_;
+                array = new Node*[size_];
+            }
+            for (int i = 0; i < size_; i++) {
+                array[i] = b.array[i];
+            }
+        }
+        return *this;
+    }
+
+    void clear(){
+        for (int i = 0; i < size_; ++i) {
+            while (array[i] != nullptr){
+                Node *current = array[i]->next;
+                delete[] array[i];
+                array[i] = current;
+            }
+            array[i] = nullptr;
+        }
+    }
+
+    bool erase(const Key& k){
+        int hash = hashFunction(k);
+        Node* prev = nullptr;
+        Node *current = array[hash];
+        while (current != nullptr){
+            if (current->key == k){
+                if (prev == nullptr){
+                    array[hash] = current->next;
+                }
+                else
+                    prev->next = current->next;
+                delete current;
+                return true;
+            }
+            prev = current;
+            current = current->next;
+        }
+        return false;
+    }
+
+    bool insert(const Key& k, const Value& v){
+        int hash = hashFunction(k);
+        if (hash >= size_){
+            int sizeOld = size_;
+            size_ = hash + 1;
+            Node **tmp = new Node*[size_];
+            for (int i = 0; i < sizeOld; ++i) {
+                tmp[i] = array[i];
+            }
+            for (int j = sizeOld; j < size_; ++j) {
+                tmp[j] = nullptr;
+            }
+            delete[] array;
+            array = tmp;
+            array[hash] = new Node;
+            array[hash]->next = nullptr;
+            array[hash]->val = v;
+            array[hash]->key = k;
+        }
+        else{
+            if (array[hash] == nullptr) {
+                array[hash] = new Node;
+                array[hash]->next = nullptr;
+                array[hash]->val = v;
+                array[hash]->key = k;
+            }
+            else {
+                Node *current = array[hash];
+                while (current->next != nullptr) {
+                    if (current->next->key == k) {
+                        break;
+                    }
+                    current = current->next;
+                }
+                if (current->next == nullptr) {
+                    current->next = new Node;
+                    current->next->next = nullptr;
+                    current->next->key = k;
+                }
+                current->next->val = v;
+            }
+        }
+    }
+
+    bool contains(const Key& k) const{
+        int hash = hashFunction(k);
+        Node *current = array[hash];
+        while(current != nullptr){
+            if (current->key == k)
+                return true;
+            current = current->next;
+        }
+        return false;
+    }
+
+    Value& operator[](const Key& k){
+        int hash = hashFunction(k);
+        if (hash >= size_ || array[hash] == nullptr) {
+            insert(k, def);
+            return def;
+        }
+        Node *current = array[hash];
+        while (current != nullptr){
+            if (current->key == k)
+                return current->val;
+            current = current->next;
+        }
+        insert(k, def);
+        return def;
+    }
+
+    Value& at(const Key& k){
+        int hash = hashFunction(k);
+        if (hash >= size_ || array[hash] == nullptr)
+            throw std::invalid_argument("There is no such key");
+        Node *current = array[hash];
+        while (current != nullptr){
+            if (current->key == k)
+                return current->val;
+            current = current->next;
+        }
+        throw std::invalid_argument("There is no such key");
+    }
+
+    const Value& at(const Key& k) const{
+        int hash = hashFunction(k);
+        if (hash >= size_ || array[hash] == nullptr)
+            throw std::invalid_argument("There is no such key");
+        Node *current = array[hash];
+        while (current != nullptr){
+            if (current->key == k)
+                return current->val;
+            current = current->next;
+        }
+        throw std::invalid_argument("There is no such key");
+    }
+
+    size_t size() const{
+        return size_;
+    }
+
+    bool empty() const{
+        return size_ == 0;
+    }
+
+    friend bool operator == (const HashTable& a, const HashTable& b){
+        if(a.size_ != b.size_)
+            return false;
+        for (int i = 0; i < a.size_; ++i) {
+            Node *current_a = a.array[i];
+            Node *current_b = b.array[i];
+            while (current_a != nullptr && current_b != nullptr){
+                if ((current_a->val != current_b->val) || (current_a->key != current_b->key)) {
+                    return false;
+                }
+                current_a = current_a->next;
+                current_b = current_b->next;
+            }
+            if (current_a != nullptr || current_b != nullptr)
+                return false;
+        }
+        return true;
+    }
+
+    friend bool operator != (const HashTable& a, const HashTable& b) {
+        return !(a == b);
+    }
+
+    int hashFunction(const Key &k) const{
+        int result = 0;
+        for (auto c : k){
+            result += c;
+        }
+        result %= 97;
+        return  result;
+    }
+};
+
+namespace {
+    class HashTableTest : public testing::Test {
+    };
 }
 
-Array::~Array(){ // очистка массива
-    delete [] ptr; // освободить память, удалив массив
+TEST_F(HashTableTest, test1) {
+    HashTable a;
+    a.insert("Key", {3, 2});
+    a.insert("PPP9", {4, 5});
+    a.insert("PPQ8", {6, 7});
+    HashTable b;
+    b.insert("Key", {3, 2});
+    b.insert("PPP9", {4, 5});
+    b.insert("PPQ8", {6, 7});
+    ASSERT_EQ(true, a == b);
 }
 
-int main(){
-    Array array1;
-    int a;
-    array1.setArray();
-    cin >> a;
-    array1.getArray();
-    Array array3(array1); //копирование
-    Array array2 = array1; //присваивание
-    array2.getArray();
-    array3.getArray();
-    cout << array1.operator[](a);
+int main() {
+    testing::InitGoogleTest();
+    RUN_ALL_TESTS();
     return 0;
 }
