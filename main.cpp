@@ -20,6 +20,16 @@ struct Value {
     friend bool operator != (const Value& a, const Value& b){
         return  !(a == b);
     }
+    friend bool operator < (const Value& a, const Value& b) {
+        if (a.age != b.age) return a.age < b.age;
+        if (a.weight != b.weight) return a.weight < b.weight;
+        return false;
+    }
+    friend bool operator <= (const Value& a, const Value& b) {
+        if (a.age != b.age) return a.age < b.age;
+        if (a.weight != b.weight) return a.weight < b.weight;
+        return true;
+    }
 };
 
 struct Node{
@@ -64,7 +74,8 @@ public:
         }
     }
     void swap(HashTable& b){
-        std::swap(*this, b);
+        std::swap(size_, b.size_);
+        std::swap(array, b.array);
     }
 
     HashTable& operator=(const HashTable& b){
@@ -85,11 +96,13 @@ public:
         for (int i = 0; i < size_; ++i) {
             while (array[i] != nullptr){
                 Node *current = array[i]->next;
-                delete[] array[i];
+                delete array[i];
                 array[i] = current;
             }
             array[i] = nullptr;
         }
+        delete[] array;
+        size_ = 0;
     }
 
     bool erase(const Key& k){
@@ -139,21 +152,41 @@ public:
                 array[hash]->key = k;
             }
             else {
+                Node *prev = nullptr;
                 Node *current = array[hash];
-                while (current->next != nullptr) {
-                    if (current->next->key == k) {
+                while (current != nullptr) {
+                    if (current->key == k) {
+                        return false;
+                    }
+                    if (v < current->val) {
                         break;
                     }
+                    if (current->next != nullptr) {
+                        if (v <= current->val && current->next->val < v) {
+                            if (k == current->next->key) return false;
+                            prev = current;
+                            current = current->next;
+                            break;
+                        }
+                    }
+                    prev = current;
                     current = current->next;
                 }
-                if (current->next == nullptr) {
-                    current->next = new Node;
-                    current->next->next = nullptr;
-                    current->next->key = k;
+                if (prev == nullptr) {
+                    array[hash] = new Node;
+                    array[hash]->next = current;
+                    array[hash]->key = k;
+                    array[hash]->val = v;
                 }
-                current->next->val = v;
+                else {
+                    prev->next = new Node;
+                    prev->next->next = current;
+                    prev->next->key = k;
+                    prev->next->val = v;
+                }
             }
         }
+        return true;
     }
 
     bool contains(const Key& k) const{
@@ -248,6 +281,26 @@ public:
         result %= 97;
         return  result;
     }
+
+    void print_ht() {
+        std::cout << "HashTable Data" << std::endl;
+        for (int i = 0; i < size_; i++) {
+            std::cout << i << ": {";
+            if (array[i] == nullptr) std::cout << "nullptr";
+            else {
+                int j = 0;
+                Node *cur = array[i];
+                while(cur != nullptr) {
+                    std::cout << j << ":(" << cur->val.age << " " << cur->val.weight << "), ";
+                    cur = cur->next;
+                    j++;
+                }
+            }
+            std::cout << "}";
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
 };
 
 namespace {
@@ -262,8 +315,8 @@ TEST_F(HashTableTest, test1) {
     a.insert("PPQ8", {6, 7});
     HashTable b;
     b.insert("Key", {3, 2});
-    b.insert("PPP9", {4, 5});
     b.insert("PPQ8", {6, 7});
+    b.insert("PPP9", {4, 5});
     ASSERT_EQ(true, a == b);
 }
 
@@ -276,7 +329,34 @@ TEST_F(HashTableTest, test2) {
     b.insert("KIy", {3, 2});
     b.insert("PPP9", {4, 9});
     b.insert("PPQ8", {6, 7});
-    ASSERT_NE(true, a == b);
+    ASSERT_EQ(true, a != b);
+}
+
+TEST_F(HashTableTest, test3) {
+    HashTable a;
+    a.insert("UYEIE", {3, 0});
+    a.insert("OFOPEWK", {6, 899});
+    a.insert("W{ED{W", {9, 7});
+    HashTable b;
+    b.insert("NFJKN:", {56, 2});
+    b.insert("NJNJKNL", {4, 9});
+    b.insert("PPQ8", {6, 6});
+    a.swap(b);
+    ASSERT_EQ(true, a.contains("PPQ8"));
+}
+
+TEST_F(HashTableTest, test4) {
+    HashTable a;
+    a.insert("UYEIE", {3, 0});
+    a.insert("OFOPEWK", {6, 899});
+    a.insert("W{ED{W", {9, 7});
+    a.clear();
+    ASSERT_EQ(true, a.empty());
+}
+
+TEST_F(HashTableTest, test5) {
+    HashTable a;
+    ASSERT_EQ(true, a.size() == 0);
 }
 
 int main() {
