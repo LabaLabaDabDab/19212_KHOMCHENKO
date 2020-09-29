@@ -267,6 +267,18 @@ TEST_F(HashTableTest, test1) {
     ASSERT_EQ(true, a == b);
 }
 
+TEST_F(HashTableTest, test2) {
+    HashTable a;
+    a.insert("Key", {3, 2});
+    a.insert("PPP9", {6, 5});
+    a.insert("PPQ8", {6, 7});
+    HashTable b;
+    b.insert("KIy", {3, 2});
+    b.insert("PPP9", {4, 9});
+    b.insert("PPQ8", {6, 7});
+    ASSERT_NE(true, a == b);
+}
+
 int main() {
     testing::InitGoogleTest();
     RUN_ALL_TESTS();
