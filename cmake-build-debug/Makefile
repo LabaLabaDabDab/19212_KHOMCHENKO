@@ -220,6 +220,60 @@ gtest_main/fast:
 	$(MAKE) -f lib\googletest-master\googletest\CMakeFiles\gtest_main.dir\build.make lib/googletest-master/googletest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
+HashTable.obj: HashTable.cpp.obj
+
+.PHONY : HashTable.obj
+
+# target to build an object file
+HashTable.cpp.obj:
+	$(MAKE) -f CMakeFiles\untitled7.dir\build.make CMakeFiles/untitled7.dir/HashTable.cpp.obj
+.PHONY : HashTable.cpp.obj
+
+HashTable.i: HashTable.cpp.i
+
+.PHONY : HashTable.i
+
+# target to preprocess a source file
+HashTable.cpp.i:
+	$(MAKE) -f CMakeFiles\untitled7.dir\build.make CMakeFiles/untitled7.dir/HashTable.cpp.i
+.PHONY : HashTable.cpp.i
+
+HashTable.s: HashTable.cpp.s
+
+.PHONY : HashTable.s
+
+# target to generate assembly for a file
+HashTable.cpp.s:
+	$(MAKE) -f CMakeFiles\untitled7.dir\build.make CMakeFiles/untitled7.dir/HashTable.cpp.s
+.PHONY : HashTable.cpp.s
+
+Tests.obj: Tests.cpp.obj
+
+.PHONY : Tests.obj
+
+# target to build an object file
+Tests.cpp.obj:
+	$(MAKE) -f CMakeFiles\untitled7.dir\build.make CMakeFiles/untitled7.dir/Tests.cpp.obj
+.PHONY : Tests.cpp.obj
+
+Tests.i: Tests.cpp.i
+
+.PHONY : Tests.i
+
+# target to preprocess a source file
+Tests.cpp.i:
+	$(MAKE) -f CMakeFiles\untitled7.dir\build.make CMakeFiles/untitled7.dir/Tests.cpp.i
+.PHONY : Tests.cpp.i
+
+Tests.s: Tests.cpp.s
+
+.PHONY : Tests.s
+
+# target to generate assembly for a file
+Tests.cpp.s:
+	$(MAKE) -f CMakeFiles\untitled7.dir\build.make CMakeFiles/untitled7.dir/Tests.cpp.s
+.PHONY : Tests.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -264,6 +318,12 @@ help:
 	@echo ... gmock
 	@echo ... gtest
 	@echo ... gtest_main
+	@echo ... HashTable.obj
+	@echo ... HashTable.i
+	@echo ... HashTable.s
+	@echo ... Tests.obj
+	@echo ... Tests.i
+	@echo ... Tests.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

@@ -324,6 +324,15 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/1604701/CLionProjects/untitled7/HashTable.cpp">
+			<Option target="untitled7"/>
+		</Unit>
+		<Unit filename="C:/Users/1604701/CLionProjects/untitled7/HashTable.h">
+			<Option target="untitled7"/>
+		</Unit>
+		<Unit filename="C:/Users/1604701/CLionProjects/untitled7/Tests.cpp">
+			<Option target="untitled7"/>
+		</Unit>
 		<Unit filename="C:/Users/1604701/CLionProjects/untitled7/lib/googletest-master/googlemock/src/gmock-all.cc">
 			<Option target="gmock"/>
 		</Unit>
