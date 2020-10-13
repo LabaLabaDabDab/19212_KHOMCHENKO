@@ -137,33 +137,14 @@ bool HashTable::insert(const Key& k, const Value& v) {
             if (current->key == k) {
                 return false;
             }
-            if (v < current->val) {
-                break;
-            }
-            if (current->next != nullptr) {
-                if (v <= current->val && current->next->val < v) {
-                    if (k == current->next->key) return false;
-                    prev = current;
-                    current = current->next;
-                    break;
-                }
-            }
             prev = current;
             current = current->next;
         }
-        if (prev == nullptr) {
-            array[hash] = new Node;
-            array[hash]->next = current;
-            array[hash]->key = k;
-            array[hash]->val = v;
-            size++;
-        } else {
-            prev->next = new Node;
-            prev->next->next = current;
-            prev->next->key = k;
-            prev->next->val = v;
-            size++;
-        }
+        prev->next = new Node;
+        prev->next->next = current;
+        prev->next->key = k;
+        prev->next->val = v;
+        size++;
     }
     if (size >= maxSize){
         resize();
@@ -237,16 +218,20 @@ bool operator == (const HashTable& a, const HashTable& b){
         return false;
     for (int i = 0; i < a.tableSize; ++i) {
         HashTable::Node *current_a = a.array[i];
-        HashTable::Node *current_b = b.array[i];
-        while (current_a != nullptr && current_b != nullptr){
-            if ((current_a->val != current_b->val) || (current_a->key != current_b->key)) {
-                return false;
+        while (current_a != nullptr){
+            bool found = false;
+            HashTable::Node *current_b = b.array[i];
+            while (current_b != nullptr){
+                if ((current_a->val == current_b->val) && (current_a->key == current_b->key)) {
+                    found = true;
+                    break;
+                }
+                current_b = current_b->next;
             }
+            if (!found)
+                return false;
             current_a = current_a->next;
-            current_b = current_b->next;
         }
-        if (current_a != nullptr || current_b != nullptr)
-            return false;
     }
     return true;
 }

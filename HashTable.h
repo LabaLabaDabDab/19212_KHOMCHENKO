@@ -51,6 +51,68 @@ public:
     friend bool operator != (const HashTable& a, const HashTable& b);
     int hashFunction(const Key &k) const;
     void print_ht();
+    class Iterator{
+    private:
+        Node * ptr;
+        int idx;
+        HashTable * ht;
+    public:
+        Iterator(Node * ptr_, int idx_, HashTable * ht_){
+            ptr = ptr_;
+            idx = idx_;
+            ht = ht_;
+        };
+        Iterator& operator++(){
+            if (ptr->next == nullptr){
+                for (int i = idx + 1; i < ht->tableSize; ++i) {
+                    if (ht->array[i] != nullptr){
+                        idx = i;
+                        ptr = ht->array[i];
+                        break;
+                    }
+                }
+            }
+            else ptr = ptr->next;
+            return *this;
+        }
+        operator std::pair<Key, Value> (){
+            return std::make_pair(ptr->key, ptr->val);
+        }
+        bool operator !=(Iterator iter){
+            return ptr != iter.ptr;
+        }
+        bool operator ==(Iterator iter){
+            return ptr == iter.ptr;
+        }
+    };
+    Iterator begin() {
+        Node * ptr = nullptr;
+        int idx = 0;
+        for (int i = 0; i < tableSize; ++i) {
+            if (array[i] != nullptr) {
+                idx = i;
+                ptr = array[i];
+                break;
+            }
+        }
+        Iterator iter(ptr, idx, this);
+        return iter;
+    }
+    Iterator end() {
+        Node * ptr = nullptr;
+        int idx = 0;
+        for (int i = tableSize - 1; i >= 0; --i) {
+            if (array[i] != nullptr) {
+                idx = i;
+                ptr = array[i];
+                break;
+            }
+        }
+        while(ptr->next != nullptr)
+            ptr = ptr->next;
+        Iterator iter(ptr, idx, this);
+        return iter;
+    }
 };
 
 #endif //UNTITLED7_HASHTABLE_H
