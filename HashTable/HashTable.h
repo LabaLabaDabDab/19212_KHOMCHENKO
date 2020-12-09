@@ -2,9 +2,8 @@
 #define UNTITLED7_HASHTABLE_H
 #include <iostream>
 #include <string>
-#include <cmath>
-#include <search.h>
-#include <cassert>
+
+
 typedef std::string Key;
 
 const int DEFAULT_TABLE_SIZE = 128;
@@ -30,6 +29,7 @@ private:
     int size;
     Node **array;
     void resize();
+    int hashFunction(const Key &k) const;
 public:
     HashTable();
     ~HashTable();
@@ -47,7 +47,7 @@ public:
     bool empty() const;
     friend bool operator == (const HashTable& a, const HashTable& b);
     friend bool operator != (const HashTable& a, const HashTable& b);
-    int hashFunction(const Key &k) const;
+
 };
 
 #endif //UNTITLED7_HASHTABLE_H
