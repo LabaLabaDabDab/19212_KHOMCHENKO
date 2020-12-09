@@ -1,6 +1,7 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <sstream>
 #include <string>
 #include "Hard3Strategy.h"
 #include "FileStream.cpp"
@@ -21,8 +22,8 @@ char Hard3Strategy::GetStrategyChoice(Player player, Player opponent)
 }
 string Hard3Strategy::SerializeObject()
 {
-	// Пакуем наши параметры в сплошную строчку,
-	// разделяя параметр и знаки для того чтобы потом можно было десериализировать строку
+	// Пакуем нашие параметры в сплошную строчку,
+	// разделяя параметри знаки для того чтобы потом можно было десериализировать строку
 	return to_string(score) + "&";
 }
 void Hard3Strategy::DeserializeObject(string serializeInfo)
@@ -30,8 +31,8 @@ void Hard3Strategy::DeserializeObject(string serializeInfo)
 	// Создаем указатель на массив из чаров,
 	// и пихаем в него преобразованую в чаровый массив строку и указываем знак, 
 	// по которому будут распределятся сериализированные параметры
-	char* temp = strtok(const_cast <char*> (serializeInfo.c_str()), "&");
-
-	// Парсим всё это дело в число
-	score = stod(temp);
+	istringstream iss(serializeInfo);
+	std::string token;
+	getline(iss, token, '&');
+	score = stod(token);
 }

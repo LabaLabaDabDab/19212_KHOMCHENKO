@@ -10,28 +10,37 @@
 
 using namespace std;
 int main();
+struct DeleteContainer
+{
+	template <typename P>
+	void operator () (P container);
+};
 class BlackJackLogic
 {
 private:
-	//  Колода карт, которая будет в дальнейшем заполена картами в зависимости от выбранного режима.
+	//  Колода карт, которая будет в дальнейшем заполена картами в зависимости от выбраного режима.
 	Deck deck;
 	// Игроки
-	Player user, dealer;
+	Player player1, player2;
+	// Стратегии игроков
+	Strategy* player1_strategy;
+	Strategy* player2_strategy;
 	//  Коструктор, который наполняет колоду картами и тасует
 	// Принимает 3 аргумента
 	// 1. Режим выдачи карт
 	// 2. Кол-во сменшаных колод
-	// 3. значение туза (в блэкджеке при начале игры игроки решают, сколько очков будет туз)
+	// 3. «начение туза (в блэкджеке при начале игры игроки решают, сколько очков будет туз)
     public:
-	BlackJackLogic(char outputCardMode, int N, int aceGlasses = 1);
 	// Метод для получения карты, который принимает в аргументах игрока, которому будет выдана карта
 	void GetCard(Player &target);
 	// Симуляция a.
-	void CompetitionDetailed(Player player1, Player player2, Strategy* player1Strategy, Strategy* player2Strategy);
+	void CompetitionDetailed();
 	// Симуляция b.
-	void CompetitionNotDetailed(Player player1, Player player2, Strategy* player1Strategy, Strategy* player2Strategy);
+	void CompetitionNotDetailed();
 	// Симуляция c.
-	void Tournament(Player player1, Player player2, Strategy* player1Strategy, Strategy* player2Strategy);
+	void Tournament();
 	// Метод для начала игры
-	void Start(char gameMode, Strategy* strategy);
+	void Start();
+
+	~BlackJackLogic();
 };
