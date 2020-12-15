@@ -1,5 +1,32 @@
 #include "FlatMap.h"
-using namespace Fmap;
+
+bool operator == (const Value & a, const Value & b) {
+    if (a.age == b.age && a.weight == b.weight) {
+        return true;
+    }
+    return false;
+}
+
+bool operator != (const Value& a, const Value& b){
+    return  !(a == b);
+}
+
+bool operator != (const FlatMap &a, const FlatMap &b) {
+    return !(a == b);
+}
+
+bool operator == (const FlatMap &a, const FlatMap &b) {
+    if (a.len_now == b.len_now) {
+        for (size_t i = 0; i < a.len_now; ++i) {
+            if (!((a.array[i] == b.array[i]) && (a.keys[i] == b.keys[i]))) {
+                return false;
+            }
+        }
+    } else {
+        return false;
+    }
+    return true;
+}
 
 FlatMap::FlatMap(){
     len = 1;
@@ -57,16 +84,7 @@ bool FlatMap::erase(const Key& k){
 
 bool FlatMap::insert(const Key& k, const Value& v) {
     if(len_now == len){
-        size_t new_len = len * len_kef;
-        Value * new_array = new Value[new_len];
-        Key * keys2 = new Key[new_len];
-        std::copy(array, array + len_now, new_array);
-        std::copy(keys, keys + len_now, keys2);
-        delete[] array;
-        delete[] keys;
-        array = new_array;
-        keys = keys2;
-        len = new_len;
+        resize();
     }
     if(len_now == 0){
         set(0, k, v);
@@ -185,4 +203,17 @@ void FlatMap::print(){
         std::cout << i << " - " << keys[i] << " - " << array[i].age << std::endl;
     }
     std::cout << std::endl;
+}
+
+void FlatMap::resize() {
+    size_t new_len = len * 2;
+    Value * new_array = new Value[new_len];
+    Key * keys2 = new Key[new_len];
+    std::copy(array, array + len_now, new_array);
+    std::copy(keys, keys + len_now, keys2);
+    delete[] array;
+    delete[] keys;
+    array = new_array;
+    keys = keys2;
+    len = new_len;
 }

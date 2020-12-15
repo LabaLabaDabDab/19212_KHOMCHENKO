@@ -1,88 +1,67 @@
 #ifndef UNTITLED7_HASHTABLE_H
 #define UNTITLED7_HASHTABLE_H
 #include <string>
+#include <stdlib.h>
 #include <stdexcept>
 #include <iostream>
 
-namespace Fmap{
-    typedef std::string Key;
-    const size_t len_kef = 2;
-    class Value {
-    public:
-        unsigned age;
-        unsigned weight;
-        Value(int p = 0) {
-            age = p;
-            weight = 11;
-        }
-        friend bool operator==(const Value & a, const Value & b){
-            if(a.age == b.age && a.weight == b.weight){
-                return true;
-            }
-            return false;
-        }
-    };
+typedef std::string Key;
 
-    class FlatMap {
-    private:
-        size_t len;
-        size_t len_now;
-        Value *array;
-        Key *keys;
+struct  Value {
+    unsigned age;
+    unsigned weight;
+    friend bool operator == (const Value& a, const Value& b);
+    friend bool operator != (const Value& a, const Value& b);
+};
 
-        size_t bin_search(const Key k) const;
+class FlatMap {
+private:
+    size_t len;
+    size_t len_now;
+    Value *array;
+    Key *keys;
 
-        int bin_search_er(const Key k) const;
+    size_t bin_search(const Key k) const;
 
-        void set(long long i, const Key &k, const Value &v);
+    int bin_search_er(const Key k) const;
 
-    public:
-        FlatMap();
+    void set(long long i, const Key &k, const Value &v);
 
-        ~FlatMap();
+    void resize();
+public:
+    FlatMap();
 
-        FlatMap(const FlatMap &b);
+    ~FlatMap();
 
-        void swap(FlatMap &b);
+    FlatMap(const FlatMap &b);
 
-        FlatMap &operator=(const FlatMap &b);
+    void swap(FlatMap &b);
 
-        void clear();
+    FlatMap &operator=(const FlatMap &b);
 
-        void print();
+    void clear();
 
-        bool erase(const Key &k);
+    void print();
 
-        bool insert(const Key &k, const Value &v);
+    bool erase(const Key &k);
 
-        bool contains(const Key &k) const;
+    bool insert(const Key &k, const Value &v);
 
-        Value &operator[](const Key &k);
+    bool contains(const Key &k) const;
 
-        Value &at(const Key &k);
+    Value &operator[](const Key &k);
 
-        const Value &at(const Key &k) const;
+    Value &at(const Key &k);
 
-        size_t get_size() const;
+    const Value &at(const Key &k) const;
 
-        bool empty() const;
+    size_t get_size() const;
 
-        friend bool operator==(const FlatMap & a, const FlatMap & b){
-            if(a.len_now == b.len_now){
-                for (size_t i = 0; i < a.len_now; ++i){
-                    if(!((a.array[i] == b.array[i]) && (a.keys[i] == b.keys[i]))){
-                        return false;
-                    }
-                }
-            } else{
-                return false;
-            }
-            return true;
-        }
+    bool empty() const;
 
-        friend bool operator!=(const FlatMap & a, const FlatMap & b){
-            return !(a == b);
-        }
-    };
-}
+    friend bool operator == (const FlatMap &a, const FlatMap &b);
+
+    friend bool operator != (const FlatMap &a, const FlatMap &b);
+};
+
 #endif //UNTITLED7_HASHTABLE_H

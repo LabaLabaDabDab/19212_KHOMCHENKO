@@ -1,100 +1,201 @@
 #include "FlatMap.h"
 #include <gtest/gtest.h>
-using namespace Fmap;
 using testing::Eq;
 
 namespace {
     class FlatMapTest : public testing::Test{
-    protected: FlatMap map1, map2;
+    protected: FlatMap a, b;
     };
-    TEST_F(FlatMapTest, insert_erase_at) {
-        Value v1(1), v2(2), v3(3), v4(4);
-        EXPECT_EQ(map1.get_size(), 0);
-        EXPECT_TRUE(map1.empty());
-        map1.insert("el1", v1);
-        map1.insert("el3", v3);
-        map1.insert("el2", v2);
-        map1.insert("el4", v4);
-        EXPECT_EQ(v4.age, map1.at("el4").age);
-        EXPECT_EQ(v1.age, map1.at("el1").age);
-        EXPECT_EQ(v2.age, map1.at("el2").age);
-        EXPECT_EQ(v3.age, map1.at("el3").age);
-        const FlatMap map3(map1);
-        EXPECT_ANY_THROW(map1.at("el7777"));
-        EXPECT_ANY_THROW(map3.at("el7777"));
-        map1.erase("el4");
-        map1.erase("el1");
-        map1.erase("el3");
-        EXPECT_ANY_THROW(map1.at("el1"));
-        EXPECT_ANY_THROW(map1.at("el3"));
-        EXPECT_ANY_THROW(map1.at("el4"));
-        EXPECT_EQ(v2.age, map1.at("el2").age);
+    TEST_F(FlatMapTest, Equal) {
+        a.insert("Key", {3, 2});
+        a.insert("PPP9", {4, 5});
+        a.insert("PPQ8", {6, 7});
+        b = a;
+        ASSERT_EQ(true, a == b);
+        b.erase("Key");
+        ASSERT_EQ(false, a == b);
+        ASSERT_EQ(true, a != b);
+        b.insert("key", {2, 1});
+        ASSERT_EQ(false, a == b);
     }
 
-    TEST_F(FlatMapTest, size_contains_empty_clear) {
-        Value v1(1), v2(2), v3(3), v4(4);
-        EXPECT_EQ(0, map1.get_size());
-        EXPECT_TRUE(map1.empty());
-        map1.insert("el1", v1);
-        map1.insert("el3", v3);
-        map1.insert("el2", v2);
-        map1.insert("el4", v4);
-        EXPECT_TRUE(map1.contains("el1"));
-        EXPECT_TRUE(map1.contains("el2"));
-        EXPECT_TRUE(map1.contains("el3"));
-        EXPECT_TRUE(map1.contains("el4"));
-        EXPECT_FALSE(map1.contains("el5"));
-        EXPECT_FALSE(map1.empty());
-        EXPECT_EQ(4, map1.get_size());
-        map1.clear();
-        EXPECT_TRUE(map1.empty());
-        EXPECT_EQ(map1.get_size(), 0);
+    TEST_F(FlatMapTest, Inequality) {
+        a.insert("Key", {3, 2});
+        a.insert("PPP9", {6, 5});
+        a.insert("PPQ8", {6, 7});
+        b.insert("KIy", {3, 2});
+        b.insert("PPP9", {4, 9});
+        b.insert("PPQ8", {6, 7});
+        a = b;
+        a.erase("PPP9");
+        ASSERT_EQ(true, a != b);
     }
 
-    TEST_F(FlatMapTest, brackets) {
-        Value v1(1), v2(2), v3(3), v4(4);
-        map1["el1"] = v1;
-        map1["el3"] = v2;
-        map1["el2"] = v3;
-        map1["el4"] = v4;
-        EXPECT_EQ(map1.at("el1").age, map1["el1"].age);
-        EXPECT_EQ(map1.at("el2").age, map1["el2"].age);
-        EXPECT_EQ(map1.at("el3").age, map1["el3"].age);
-        EXPECT_EQ(map1.at("el4").age, map1["el4"].age);
+    TEST_F(FlatMapTest, Empty) {
+        EXPECT_EQ(true, a.empty());
+        a["Key"];
+        EXPECT_EQ(false, a.empty());
     }
 
-    TEST_F(FlatMapTest, equality_constructor) {
-        Value v1(1), v2(2), v3(3), v4(4);
-        map1["el1"] = v1;
-        map1["el3"] = v2;
-        map1["el2"] = v3;
-        map1["el4"] = v4;
-        FlatMap map2 = map1;
-        EXPECT_TRUE(map1 == map2);
-        EXPECT_TRUE(map2 == map1);
-        EXPECT_FALSE(map1 != map2);
-        EXPECT_FALSE(map2 != map1);
-        map1.erase("el2");
-        EXPECT_FALSE(map1 == map2);
-        EXPECT_FALSE(map2 == map1);
-        EXPECT_TRUE(map1 != map2);
-        EXPECT_TRUE(map2 != map1);
+    TEST_F(FlatMapTest, Swap) {
+        a.insert("UYEIE", {3, 0});
+        a.insert("OFOPEWK", {6, 899});
+        a.insert("W{ED{W", {9, 7});
+        b.insert("NFJKN:", {56, 2});
+        b.insert("NJNJKNL", {4, 9});
+        b.insert("PPQ8", {6, 6});
+        a.swap(b);
+        ASSERT_EQ(false, a == b);
+        b.swap(a);
+        ASSERT_EQ(true, a.contains("W{ED{W"));
     }
 
-    TEST_F(FlatMapTest, swap_assignment) {
-        Value v1(1), v2(2), v3(3), v4(4);
-        map1["el1"] = v1;
-        map1["el3"] = v2;
-        map1["el2"] = v3;
-        map1["el4"] = v4;
-        map2 = map1;
-        EXPECT_TRUE(map2 == map1);
-        map1.erase("el1");
-        EXPECT_TRUE(map2 != map1);
-        map1.swap(map2);
-        map2.swap(map1);
-        map2.swap(map1);
-        EXPECT_TRUE(map1.contains("el1"));
-        EXPECT_FALSE(map2.contains("el1"));
+    TEST_F(FlatMapTest, Clear) {
+        a.insert("UYEIE", {3, 0});
+        a.insert("OFOPEWK", {6, 899});
+        a.insert("W{ED{W", {9, 7});
+        ASSERT_EQ(3, a.get_size());
+        a.clear();
+        ASSERT_EQ(0, a.get_size());
+        EXPECT_ANY_THROW(a.at("UYEIE"));
+        EXPECT_ANY_THROW(a.at("OFOPEWK"));
+        EXPECT_ANY_THROW(a.at("W{ED{W"));
+    }
+
+    TEST_F(FlatMapTest, Assignment) {
+        a.insert("UYEIE", {3, 0});
+        a.insert("OFOPEWK", {6, 899});
+        a.insert("W{ED{W", {9, 7});
+        FlatMap c(a);
+        ASSERT_EQ(true, a == c);
+        c.erase("UYEIE");
+        ASSERT_EQ(false, a == c);
+        ASSERT_EQ(true, a != c);
+        c.insert("key", {2, 1});
+        ASSERT_EQ(false, a == c);
+    }
+
+    TEST_F(FlatMapTest, Contains) {
+        a.insert("UYEIE", {3, 0});
+        a.insert("OFOPEWK", {6, 899});
+        a.insert("W{ED{W", {9, 7});
+        FlatMap c(a);
+        a.erase("UYEIE");
+        a.erase("OFOPEWK");
+        a.erase("W{ED{W");
+        ASSERT_EQ(false, a == c);
+        EXPECT_ANY_THROW(a.at("UYEIE"));
+        EXPECT_ANY_THROW(a.at("W{ED{W"));
+        ASSERT_EQ(false, a.contains("UYEIE"));
+    }
+
+    TEST_F(FlatMapTest, SearchByKey) {
+        a.insert("UYEIE", {3, 0});
+        a.insert("OFOPEWK", {6, 899});
+        a.insert("W{ED{W", {9, 7});
+        b = a;
+        ASSERT_EQ(true, a == b);
+        const Value check = {3, 0};
+        a.erase("UYEIE");
+        a.erase("OFOPEWK");
+        a.erase("W{ED{W");
+        ASSERT_EQ(true, b.at("UYEIE") == check);
+        EXPECT_ANY_THROW(a.at("UYEIE"));
+    }
+
+    TEST_F(FlatMapTest, SearchByKeyConst) {
+        a.insert("UYEIE", {3, 0});
+        a.insert("OFOPEWK", {6, 899});
+        a.insert("W{ED{W", {9, 7});
+        const FlatMap c(a);
+        const Value check = {3, 0};
+        ASSERT_EQ(true, a == c);
+        a.erase("UYEIE");
+        a.erase("OFOPEWK");
+        a.erase("W{ED{W");
+        ASSERT_EQ(true, c.at("UYEIE") == check);
+        EXPECT_ANY_THROW(a.at("UYEIE"));
+    }
+
+    TEST_F(FlatMapTest, CheckSize) {
+        Key check;
+        for (int i = 0; i < 127; ++i) {
+            check = std::to_string(rand());
+            a.insert(check, {3, 0});
+        }
+        a.insert("check", {1, 0});
+        ASSERT_EQ(true, a.get_size() == 128);
+        a.insert("check1", {1, 0});
+        ASSERT_EQ(true, a.get_size() == 129);
+        a.erase("check1");
+        ASSERT_EQ(true, a.get_size() == 128);
+    }
+
+    TEST_F(FlatMapTest, OperatorParentheses) {
+        Value c = {0, 0};
+        EXPECT_EQ(c, a["Key"]);
+        c = {1, 2};
+        a["Key"] = c;
+        EXPECT_EQ(c, a["Key"]);
+    }
+
+    TEST_F(FlatMapTest, DeletionError) {
+        ASSERT_EQ(true, a.erase("UYEIE") == false);
+    }
+
+    TEST_F(FlatMapTest, MultipleInserts) {
+        Key check;
+        for (int i = 0; i < 1000; ++i) {
+            check = std::to_string(rand());
+            a.insert(check, {3, 0});
+        }
+        a.clear();
+        for (int i = 0; i < 100; ++i) {
+            check = std::to_string(rand());
+            a.insert(check, {9, 0});
+        }
+        ASSERT_EQ(true, a.get_size() == 100);
+    }
+
+    TEST_F(FlatMapTest, Insert) {
+        EXPECT_EQ(true, a.insert("JKJKJK", {103, 2}));
+        EXPECT_EQ(false, a.insert("JKJKJK", {12, 2}));
+        EXPECT_EQ(false, a.insert("JKJKJK", {33, 4}));
+        EXPECT_EQ(1, a.get_size());
+        EXPECT_EQ(true, a.insert("JKJKJKf", {1, 26}));
+    }
+
+    TEST_F(FlatMapTest, Erase) {
+        EXPECT_EQ(false, a.erase("JKJKJK"));
+        a["JKJKJK"] = {1, 2};
+        a["JKJKJKf"] = {3, 4};
+        a["JKJKJKl"] = {5, 6};
+        EXPECT_EQ(true, a.erase("JKJKJKf"));
+        EXPECT_EQ(true, a.erase("JKJKJKl"));
+        EXPECT_EQ(true, a.erase("JKJKJK"));
+        EXPECT_EQ(0, a.get_size());
+    }
+
+    TEST_F(FlatMapTest, ResizeCheck) {
+        std::string str = "0"; unsigned int d = 0;
+        for (int i = 0; i < 1000; ++i) {
+            a.insert(str, {d, d++});
+            str += '0';
+            EXPECT_EQ(i + 1, a.get_size());
+        }
+        d = 0; str = "0";
+        for (int i = 0; i < 1000; ++i, str += '0') {
+            Value z = {d, d++};
+            EXPECT_EQ(z, a.at(str));
+        }
+        for (int i = 0; i < 1000; ++i) {
+            a.insert(str, {d, d++});
+            str += '0';
+        }
+        d = 0; str = "0";
+        for (int i = 0; i < 2000; ++i, str += '0') {
+            Value z = {d, d++};
+            EXPECT_EQ(z, a.at(str));
+        }
     }
 }
