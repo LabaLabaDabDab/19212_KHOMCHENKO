@@ -1,10 +1,7 @@
 #include "FlatMap.h"
 
 bool operator == (const Value & a, const Value & b) {
-    if (a.age == b.age && a.weight == b.weight) {
-        return true;
-    }
-    return false;
+   return  a.age == b.age && a.weight == b.weight;
 }
 
 bool operator != (const Value& a, const Value& b){
