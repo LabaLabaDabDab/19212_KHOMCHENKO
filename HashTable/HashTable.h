@@ -12,26 +12,24 @@ struct Value {
     friend bool operator != (const Value& a, const Value& b);
 };
 
-struct Node {
-    Node *next;
-    Value val;
-    Key key;
-    Node(){
-        val = {0,0};
-        next = nullptr;
-    }
-    void NodeInit(const Value &v, const Key &k);
-};
 
 class HashTable {
 private:
+    struct Node {
+        Node *next;
+        Value val;
+        Key key;
+        Node(const Value val, const Key key, Node * next = nullptr) : val(val), key(key) {
+            this->next = next;
+        }
+    };
     const int DEFAULT_TABLE_SIZE = 128;
     Value def = {0, 0};
     constexpr static float kThreshold = 0.75f;
     size_t maxSize;
     size_t tableSize;
     size_t size;
-    Node **array;
+    HashTable::Node **array;
     void resize();
     int hashFunction(const Key &k) const;
 public:
@@ -52,6 +50,7 @@ public:
     friend bool operator==(const HashTable &a, const HashTable &b);
     friend bool operator!=(const HashTable &a, const HashTable &b);
 };
+
 
 
 #endif //UNTITLED7_HASHTABLE_H

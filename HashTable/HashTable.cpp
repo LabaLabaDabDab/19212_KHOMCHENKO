@@ -13,7 +13,7 @@ HashTable::HashTable() {
     maxSize = (int)(tableSize * kThreshold);
     size = 0;
     array = new Node*[tableSize];
-    std::fill_n(array, tableSize, nullptr);
+    std::fill(array, array + tableSize, nullptr);
 }
 
 HashTable::~HashTable(){
@@ -26,7 +26,7 @@ HashTable::HashTable(const HashTable& b){
     tableSize = b.tableSize;
     size = 0;
     array = new Node*[tableSize];
-    std::fill_n(array, tableSize, nullptr);
+    std::fill(array, array + tableSize, nullptr);
     Node* current;
     for (int j = 0; j < tableSize; ++j) {
         current = b.array[j];
@@ -52,7 +52,7 @@ HashTable& HashTable::operator=(const HashTable& b){
     tableSize = b.tableSize;
     size = 0;
     array = new Node*[tableSize];
-    std::fill_n(array, tableSize, nullptr);
+    std::fill(array, array + tableSize, nullptr);
     Node* current;
     for (int j = 0; j < tableSize; ++j) {
         current = b.array[j];
@@ -78,7 +78,7 @@ void HashTable::clear(){
     maxSize = (int)(tableSize * kThreshold);
     size = 0;
     array = new Node * [tableSize];
-    std::fill_n(array, tableSize, nullptr);
+    std::fill(array, array + tableSize, nullptr);
 }
 
 bool HashTable::erase(const Key& k){
@@ -105,8 +105,7 @@ bool HashTable::erase(const Key& k){
 bool HashTable::insert(const Key& k, const Value& v) {
     int hash = hashFunction(k);
     if (array[hash] == nullptr) {
-        array[hash] = new Node;
-        array[hash]->NodeInit(v, k);
+        array[hash] = new Node(v, k);
         size++;
     } else {
         Node *prev = nullptr;
@@ -118,9 +117,7 @@ bool HashTable::insert(const Key& k, const Value& v) {
             prev = current;
             current = current->next;
         }
-        prev->next = new Node;
-        prev->next->next = current;
-        prev->next->NodeInit(v, k);
+        prev->next = new Node(v, k, current);
         size++;
     }
     if (size >= maxSize){
@@ -194,10 +191,10 @@ bool operator == (const HashTable& a, const HashTable& b){
     if(a.size != b.size)
         return false;
     for (int i = 0; i < a.tableSize; ++i) {
-        Node *current_a = a.array[i];
+        HashTable::Node *current_a = a.array[i];
         while (current_a != nullptr){
             bool found = false;
-            Node *current_b = b.array[i];
+            HashTable::Node *current_b = b.array[i];
             while (current_b != nullptr){
                 if ((current_a->val == current_b->val) && (current_a->key == current_b->key)) {
                     found = true;
@@ -230,26 +227,18 @@ void HashTable::resize() {
     int oldTableSize = tableSize;
     tableSize *= 2;
     maxSize = (int) (tableSize * kThreshold);
-    Node **oldTable = array;
-    array = new Node*[tableSize];
-    std::fill_n(array, tableSize, nullptr);
+    HashTable::Node **oldTable = array;
+    array = new HashTable::Node*[tableSize];
+    std::fill(array, array + tableSize, nullptr);
     size = 0;
     for (int hash = 0; hash < oldTableSize; hash++)
         if (oldTable[hash] != nullptr) {
-            Node *oldEntry;
             Node *entry = oldTable[hash];
             while (entry != nullptr) {
                 insert(entry->key, entry->val);
-                oldEntry = entry;
                 entry = entry->next;
-                delete oldEntry;
             }
         }
-    delete[] oldTable;
+    swap(*this);
 }
 
-void Node::NodeInit(const Value &v, const Key &k){
-    next = nullptr;
-    val = v;
-    key = k;
-}
