@@ -14,12 +14,12 @@ namespace {
         a.insert("PPP9", {4, 5});
         a.insert("PPQ8", {6, 7});
         b = a;
-        ASSERT_EQ(true, a == b);
+        ASSERT_TRUE(a == b);
         b.erase("Key");
-        ASSERT_EQ(false, a == b);
-        ASSERT_EQ(true, a != b);
+        ASSERT_FALSE(a == b);
+        ASSERT_TRUE(a != b);
         b.insert("key", {2, 1});
-        ASSERT_EQ(false, a == b);
+        ASSERT_FALSE(a == b);
     }
 
     TEST_F(HashTableTest, Inequality) {
@@ -31,13 +31,13 @@ namespace {
         b.insert("PPQ8", {6, 7});
         a = b;
         a.erase("PPP9");
-        ASSERT_EQ(true, a != b);
+        ASSERT_TRUE(a != b);
     }
 
     TEST_F(HashTableTest, Empty) {
-        EXPECT_EQ(true, a.empty());
+        EXPECT_TRUE(a.empty());
         a["Key"];
-        EXPECT_EQ(false, a.empty());
+        EXPECT_FALSE(a.empty());
     }
 
     TEST_F(HashTableTest, Swap) {
@@ -48,9 +48,9 @@ namespace {
         b.insert("NJNJKNL", {4, 9});
         b.insert("PPQ8", {6, 6});
         a.swap(b);
-        ASSERT_EQ(false, a == b);
+        ASSERT_FALSE(a == b);
         b.swap(a);
-        ASSERT_EQ(true, a.contains("W{ED{W"));
+        ASSERT_TRUE(a.contains("W{ED{W"));
     }
 
     TEST_F(HashTableTest, Clear) {
@@ -70,12 +70,12 @@ namespace {
         a.insert("OFOPEWK", {6, 899});
         a.insert("W{ED{W", {9, 7});
         HashTable c(a);
-        ASSERT_EQ(true, a == c);
+        ASSERT_TRUE( a == c);
         c.erase("UYEIE");
-        ASSERT_EQ(false, a == c);
-        ASSERT_EQ(true, a != c);
+        ASSERT_FALSE(a == c);
+        ASSERT_TRUE(a != c);
         c.insert("key", {2, 1});
-        ASSERT_EQ(false, a == c);
+        ASSERT_FALSE(a == c);
     }
 
     TEST_F(HashTableTest, Contains) {
@@ -84,9 +84,9 @@ namespace {
         a.insert("W{ED{W", {9, 7});
         HashTable c(a);
         a.erase("UYEIE");
-        ASSERT_EQ(false, a == c);
+        ASSERT_FALSE(a == c);
         EXPECT_ANY_THROW(a.at("UYEIE"));
-        ASSERT_EQ(false, a.contains("UYEIE"));
+        ASSERT_FALSE(a.contains("UYEIE"));
     }
 
     TEST_F(HashTableTest, SearchByKey) {
@@ -94,10 +94,10 @@ namespace {
         a.insert("OFOPEWK", {6, 899});
         a.insert("W{ED{W", {9, 7});
         b = a;
-        ASSERT_EQ(true, a == b);
+        ASSERT_TRUE(a == b);
         const Value check = {3, 0};
         a.erase("UYEIE");
-        ASSERT_EQ(true, b.at("UYEIE") == check);
+        ASSERT_TRUE(b.at("UYEIE") == check);
         EXPECT_ANY_THROW(a.at("UYEIE"));
     }
 
@@ -107,9 +107,9 @@ namespace {
         a.insert("W{ED{W", {9, 7});
         const HashTable c(a);
         const Value check = {3, 0};
-        ASSERT_EQ(true, a == c);
+        ASSERT_TRUE(a == c);
         a.erase("UYEIE");
-        ASSERT_EQ(true, c.at("UYEIE") == check);
+        ASSERT_TRUE(c.at("UYEIE") == check);
         EXPECT_ANY_THROW(a.at("UYEIE"));
     }
 
@@ -120,11 +120,11 @@ namespace {
             a.insert(check, {3, 0});
         }
         a.insert("check", {1, 0});
-        ASSERT_EQ(true, a.get_size() == 128);
+        ASSERT_TRUE(a.get_size() == 128);
         a.insert("check1", {1, 0});
-        ASSERT_EQ(true, a.get_size() == 129);
+        ASSERT_TRUE(a.get_size() == 129);
         a.erase("check1");
-        ASSERT_EQ(true, a.get_size() == 128);
+        ASSERT_TRUE(a.get_size() == 128);
     }
 
     TEST_F(HashTableTest, OperatorParentheses) {
@@ -136,7 +136,7 @@ namespace {
     }
 
     TEST_F(HashTableTest, DeletionError) {
-        ASSERT_EQ(true, a.erase("UYEIE") == false);
+        ASSERT_TRUE(a.erase("UYEIE") == false);
     }
 
     TEST_F(HashTableTest, MultipleInserts) {
@@ -150,25 +150,25 @@ namespace {
             check = std::to_string(rand());
             a.insert(check, {9, 0});
         }
-        ASSERT_EQ(true, a.get_size() == 100);
+        ASSERT_TRUE(a.get_size() == 100);
     }
 
     TEST_F(HashTableTest, Insert) {
-        EXPECT_EQ(true, a.insert("JKJKJK", {103, 2}));
-        EXPECT_EQ(false, a.insert("JKJKJK", {12, 2}));
-        EXPECT_EQ(false, a.insert("JKJKJK", {33, 4}));
+        EXPECT_TRUE(a.insert("JKJKJK", {103, 2}));
+        EXPECT_FALSE(a.insert("JKJKJK", {12, 2}));
+        EXPECT_FALSE(a.insert("JKJKJK", {33, 4}));
         EXPECT_EQ(1, a.get_size());
-        EXPECT_EQ(true, a.insert("JKJKJKf", {1, 26}));
+        EXPECT_TRUE(a.insert("JKJKJKf", {1, 26}));
     }
 
     TEST_F(HashTableTest, Erase) {
-        EXPECT_EQ(false, a.erase("JKJKJK"));
+        EXPECT_FALSE(a.erase("JKJKJK"));
         a["JKJKJK"] = {1, 2};
         a["JKJKJKf"] = {3, 4};
         a["JKJKJKl"] = {5, 6};
-        EXPECT_EQ(true, a.erase("JKJKJKf"));
-        EXPECT_EQ(true, a.erase("JKJKJKl"));
-        EXPECT_EQ(true, a.erase("JKJKJK"));
+        EXPECT_TRUE(a.erase("JKJKJKf"));
+        EXPECT_TRUE(a.erase("JKJKJKl"));
+        EXPECT_TRUE(a.erase("JKJKJK"));
         EXPECT_EQ(0, a.get_size());
     }
 
