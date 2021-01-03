@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>723</width>
+    <height>481</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>723</width>
+    <height>452</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Conway's Game of Life</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="minimumSize">
+    <size>
+     <width>732</width>
+     <height>432</height>
+    </size>
+   </property>
+   <layout class="QHBoxLayout" name="mainLayout">
+    <item>
+     <widget class="QWidget" name="setWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>2</horstretch>
+        <verstretch>1</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>232</width>
+        <height>434</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>500</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>232</width>
+        <height>434</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QGridLayout" name="setLayout">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="StartButton">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="ClearButton">
+           <property name="text">
+            <string>Clear</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="StopButton">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="applyButton">
+           <property name="font">
+            <font>
+             <kerning>false</kerning>
+            </font>
+           </property>
+           <property name="text">
+            <string>Apply</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="timeLayout">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Time Interval</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="timeSliderLayout">
+           <item>
+            <widget class="QLCDNumber" name="intimeIntervalLCD">
+             <property name="smallDecimalPoint">
+              <bool>false</bool>
+             </property>
+             <property name="digitCount">
+              <number>4</number>
+             </property>
+             <property name="segmentStyle">
+              <enum>QLCDNumber::Filled</enum>
+             </property>
+             <property name="intValue" stdset="0">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSlider" name="intervalSlider">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="universeSettingLayout">
+         <item>
+          <layout class="QHBoxLayout" name="radioButtonsLayout">
+           <item>
+            <widget class="QRadioButton" name="squareButton">
+             <property name="text">
+              <string>Square Universe</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="customButton">
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Custom Universe</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_1">
+           <property name="text">
+            <string>Width</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="widthSliderLayout_2">
+           <item>
+            <widget class="QLCDNumber" name="widthLCD">
+             <property name="smallDecimalPoint">
+              <bool>false</bool>
+             </property>
+             <property name="digitCount">
+              <number>4</number>
+             </property>
+             <property name="segmentStyle">
+              <enum>QLCDNumber::Filled</enum>
+             </property>
+             <property name="intValue" stdset="0">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSlider" name="widthSlider">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Heihgt</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLCDNumber" name="heightLCD">
+             <property name="smallDecimalPoint">
+              <bool>false</bool>
+             </property>
+             <property name="digitCount">
+              <number>4</number>
+             </property>
+             <property name="segmentStyle">
+              <enum>QLCDNumber::Filled</enum>
+             </property>
+             <property name="intValue" stdset="0">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSlider" name="heightSlider">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>218</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="fileLayout">
+         <item>
+          <widget class="QPushButton" name="loadButton">
+           <property name="text">
+            <string>Load</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="saveButton">
+           <property name="text">
+            <string>Save</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>218</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="colorButton">
+         <property name="text">
+          <string>SetColor</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="GameWidget" name="game" native="true">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>6</horstretch>
+        <verstretch>6</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>352</width>
+        <height>352</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>352</width>
+        <height>352</height>
+       </size>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>GameWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">gamewidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>squareButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>heightSlider</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>80</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>customButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>heightSlider</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widthSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>widthLCD</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>100</x>
+     <y>192</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>40</x>
+     <y>194</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>heightSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>heightLCD</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>56</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>intervalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>intimeIntervalLCD</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>151</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>37</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
