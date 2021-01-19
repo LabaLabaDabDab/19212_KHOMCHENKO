@@ -1,5 +1,4 @@
 #include "blackjack.h"
-#include "game.h"
 
 std::vector<Card> Deck::start_deck(0);
 
@@ -15,10 +14,10 @@ const Card & Card::operator=(const Card & other) {
 void Deck::shufle() {
 	topCard = N * size - 1u;
 	unsigned int i;
-	srand(unsigned int(time(0)));
+	srand(int(time(0)));
 	if (mode == CardGivMode::SIMPLE) {
 		for (i = 0u; i <= topCard; i++) {
-			deck[i].number = static_cast<unsigned char>(1 + rand() % 9);
+			deck[i].number = static_cast<unsigned char>(1 + rand() % (size / 4));
 			deck[i].weight = deck[i].number;
 		}
 		return;
@@ -39,6 +38,7 @@ void Deck::shufle() {
 		return;
 	}
 }
+
 
 const Card & Deck::getCard() {
 	if (topCard == 0u) {
@@ -65,7 +65,6 @@ void Deck::InitialDeck() {
 
 				else
 					start_deck[cnt].weight = j + (15 - size / 4);
-
 				cnt++;
 			}
 		}

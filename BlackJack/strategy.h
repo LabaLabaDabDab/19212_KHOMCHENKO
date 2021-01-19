@@ -13,4 +13,5 @@ public:
 	virtual std::string getName() = 0;
 	virtual std::string getID() = 0;
 };
+
 #endif

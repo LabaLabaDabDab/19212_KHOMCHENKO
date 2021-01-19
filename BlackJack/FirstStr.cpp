@@ -1,4 +1,5 @@
-#include "firststr.h"
+#include "FirstStr.h"
+
 namespace {
 	Strategy * newFirstStr() {
 		return new FirstStr;

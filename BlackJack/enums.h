@@ -28,5 +28,4 @@ enum class GameMode : unsigned char {
 	FAST = 0x01,
 	TOURNAMENT = 0x02
 };
-
 #endif // ENUMS_H

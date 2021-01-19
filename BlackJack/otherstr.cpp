@@ -58,7 +58,7 @@ Decision Other::decide(const StackCard & stack, const std::vector<Card> & front,
 			break;
 	}
 	std::vector<unsigned int> & behavior = data[i < data.size() ? i : data.size() - 1];
-	unsigned char counter = 0; //how many strategies stoped the game
+	unsigned char counter = 0;
 	for (auto it : decisions) {
 		if (it == Decision::STOP)
 			counter++;

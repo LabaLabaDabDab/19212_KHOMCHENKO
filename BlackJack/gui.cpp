@@ -1,8 +1,6 @@
 #include "gui.h"
 #include <string>
 #include "game.h"
-#include "blackjack.h"
-#include "strategy.h"
 
 void Gui::TurnResults(unsigned int i) const {
 	std::cout << " \t" << i + 1u << ": \n"
@@ -67,18 +65,7 @@ void Gui::TableResults(const std::vector<unsigned char>& table) const {
 
 void Gui::TourneyResults(const std::vector<unsigned char> & results) const {
 	std::cout << std::endl;
-	unsigned char i;
-	std::vector<unsigned char> winners;
-	winners.push_back(0u);
-	for (i = 1u; i < game->configs.countStr; i++) {
-		if (results[i] > results[winners.back()]) {
-			winners.clear();
-			winners.push_back(i);
-		}
-		else if (results[i] == results[winners.back()]) {
-			winners.push_back(i);
-		}
-	}
+    auto winners = game->getWinners();
 	if (winners.size() > 1u) {
 		std::cout << "Drawn game! At least two strategies scored equal score!" << std::endl;
 		std::cout << "\t Strategies with the highest score:" << std::endl;
@@ -90,6 +77,6 @@ void Gui::TourneyResults(const std::vector<unsigned char> & results) const {
 	}
 	else {
 		std::cout << game->strategies[winners.back()]->getName() << " won the tourney. It's strategy number " <<
-			winners.back() + 1 << ". " << std::endl;
+			winners.back() + 1u << ". " << std::endl;
 	}
 }

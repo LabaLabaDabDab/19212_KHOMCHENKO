@@ -1,5 +1,6 @@
 #ifndef OTHERSTR_H
 #define OTHERSTR_H
+
 #include <fstream>
 #include <vector>
 #include "factory.h"
@@ -16,4 +17,5 @@ public:
 	Other() { StrategyImp::score = 0u; }
 	~Other() override {}
 };
+
 #endif 

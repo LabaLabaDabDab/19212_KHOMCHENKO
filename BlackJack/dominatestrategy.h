@@ -11,6 +11,7 @@ public:
 	Decision decide(const StackCard & stack, const std::vector<Card> & front, const std::vector<Decision> & decisions) override final;
 	std::string getName() override final;
 	std::string getID() override final;
+
 	Dominate() { StrategyImp::score = 0u; }
 	~Dominate() override {}
 };

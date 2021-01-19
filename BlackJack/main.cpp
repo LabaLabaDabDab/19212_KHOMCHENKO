@@ -1,8 +1,9 @@
+#include <cstring>
 #include "blackjack.h"
 #include "factory.h"
 #include "game.h"
-#include "strategy.h"
-#include "StrategyImp.h"
+#include "string"
+#include "gtest/gtest.h"
 
 void ParametrsProcessing(GConfigs & mode, std::vector<std::string> & ID, std::vector<std::string> & par) {
 	unsigned int i;
@@ -24,8 +25,8 @@ void ParametrsProcessing(GConfigs & mode, std::vector<std::string> & ID, std::ve
 		}
 		else if (par[i].front() == '-') {
 			std::string tmp = "--configs=";
-			if (std::strncmp(par[i].c_str(), "--configs=", tmp.length())) {
-				std::cout << "Undefined argument for programm!!" << par[i] << std::endl;
+			if (std::strncmp(par[i].c_str(), "--configs=", tmp.length()) != 0) {
+				std::cout << "Undefined argument for programm!" << par[i] << std::endl;
 				continue;
 			}
 			mode.configDir.resize(par[i].length() - tmp.length());
@@ -38,18 +39,22 @@ void ParametrsProcessing(GConfigs & mode, std::vector<std::string> & ID, std::ve
 }
 
 int main(int argc, char *argv[]) {
-	std::cout << "This is a programm for simulating BlackJack game" << std::endl;
+    testing::InitGoogleTest();
+    RUN_ALL_TESTS();
+    return 0;
+
+	std::cout << "This is a programm for simulating 'BlackJack' game." << std::endl;
 	if (argc < 2) {
 		std::cout << "Bad input" << std::endl;
 		return 1;
 	}
+
 	std::vector<std::string> parametrs(0);
 	std::vector<std::string> ID(0);
 	GConfigs configs;
-
 	for (int i = 1; i < argc; i++)
 		parametrs.push_back(std::string(argv[i]));
-
+	
 	ParametrsProcessing(configs, ID, parametrs);
 	std::vector<std::unique_ptr<Strategy>> strategies(0);
 	Factory<std::string, Strategy * (*)()> * f = Factory<std::string, Strategy * (*)()>::getInstance();

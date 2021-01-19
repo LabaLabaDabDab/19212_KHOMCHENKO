@@ -3,6 +3,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <memory>
+
 #include "blackjack.h"
 #include "gui.h"
 #include "enums.h"
@@ -14,6 +16,7 @@ struct GConfigs {
 	std::string configDir;
 	unsigned char deckSize;
 	size_t countStr;
+
 	GConfigs(GConfigs & other);
 	GConfigs();
 	GConfigs & operator=(const GConfigs & other);
@@ -31,6 +34,7 @@ class Game {
 private:
 	void Tournament();
 	void Turn();
+
 	void ResultsCalculating();
 	size_t Pair(size_t first, size_t second);
 	Game() = delete;
@@ -38,8 +42,12 @@ public:
 	Game(GConfigs, std::vector<std::unique_ptr<Strategy>>);
 	~Game() {}
 	void Play();
+
 	void startGame() { _isGame = _Game::YES; }
 	void stopGame() { _isGame = _Game::NO; }
+
+    std::vector<unsigned char>getWinners ();
+
 	friend class Gui;
 };
 #endif

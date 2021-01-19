@@ -16,8 +16,9 @@ struct Card {
 };
 
 class Deck {
-	const static unsigned char size = 36u;
+	const static unsigned char size = 52u;
 	static std::vector<Card> start_deck;
+
 	CardGivMode mode;
 	unsigned char N;
 	unsigned int topCard;

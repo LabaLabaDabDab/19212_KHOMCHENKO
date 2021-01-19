@@ -14,7 +14,6 @@ Decision SecondStr::decide(const StackCard & stack, const std::vector<Card> & fr
 	getScore(stack);
 	return ((StrategyImp::score < 16u && StrategyImp::score > 2u) ? Decision::NEXT : Decision::STOP);
 }
-
 std::string SecondStr::getName() {
 	return name;
 }

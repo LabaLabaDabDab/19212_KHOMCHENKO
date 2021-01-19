@@ -6,7 +6,7 @@
 class Game;
 
 class Gui {
-	const Game * game;
+	Game * game;
 	Gui() = delete;
 public:
 	Gui(Game * const other) : game(other) {}

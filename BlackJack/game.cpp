@@ -1,5 +1,4 @@
 #include "game.h"
-#include "gui.h"
 
 GConfigs::GConfigs(GConfigs & other) : cMod(other.cMod), gMod(other.gMod),
 configDir(other.configDir), deckSize(other.deckSize), countStr(other.countStr) {}
@@ -82,7 +81,6 @@ void Game::Turn() {
 			return;
 		}
 	}
-
 	stopGame();
 }
 
@@ -108,7 +106,7 @@ void Game::Tournament() {
 	for (i = 0u; i < configs.countStr - 1u; i++) {
 		for (j = i + 1u; j < configs.countStr; j++) {
 			tmp = Pair(i, j);
-			matrix[i*configs.countStr + j] = matrix[j*configs.countStr + i] = static_cast<unsigned char>(tmp);
+			matrix[i * configs.countStr + j] = matrix[j*configs.countStr + i] = static_cast<unsigned char>(tmp);
 			results[tmp]++;
 		}
 	}
@@ -148,7 +146,6 @@ size_t Game::Pair(size_t i, size_t j) {
 	else {
 		ret = ((stackcard[j].score() <= 21u) ? j : configs.countStr);
 	}
-	
 	stackcard[i].clear();
 	stackcard[j].clear();
 	deck.shufle();
@@ -179,4 +176,29 @@ void Game::ResultsCalculating() {
 		std::cout << "Drawn game! At least two strategies scored equal score!" << std::endl;
 
 	gui->Results();
+}
+
+std::vector<unsigned char> Game::getWinners(){
+    std::vector<unsigned char> matrix(configs.countStr * configs.countStr);
+    std::vector<unsigned char> results(configs.countStr);
+    for (size_t i = 0u; i < configs.countStr - 1u; i++) {
+        for (size_t j = i + 1u; j < configs.countStr; j++) {
+            auto tmp = Pair(i, j);
+            matrix[i * configs.countStr + j] = matrix[j*configs.countStr + i] = static_cast<unsigned char>(tmp);
+            results[tmp]++;
+        }
+    }
+    unsigned char i;
+    std::vector<unsigned char> winners;
+    winners.push_back(0u);
+    for (i = 1u; i < configs.countStr; i++) {
+        if (results[i] > results[winners.back()]) {
+            winners.clear();
+            winners.push_back(i);
+        }
+        else if (results[i] == results[winners.back()]) {
+            winners.push_back(i);
+        }
+    }
+    return winners;
 }
