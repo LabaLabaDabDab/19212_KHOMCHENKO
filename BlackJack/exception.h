@@ -11,8 +11,6 @@ public:
 	}
 };
 
-class MemoryError : public std::exception {};
-
 class StrSettingError : public std::exception {
 public:
 	int what() {
