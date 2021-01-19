@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget * parent) :
     ui->intervalSlider->setValue(ui->game->interval());
     ui->squareButton->click();
 
+
     connect(ui->StartButton, SIGNAL(clicked()), ui->game, SLOT(startGame()));
     connect(ui->StopButton, SIGNAL(clicked()), ui->game,SLOT(stopGame()));
     connect(ui->ClearButton, SIGNAL(clicked()), ui->game,SLOT(clear()));
@@ -35,7 +36,6 @@ MainWindow::MainWindow(QWidget * parent) :
     connect(ui->widthSlider, SIGNAL(valueChanged(int)), ui->game, SLOT(setFieldWidth(int)));
     connect(ui->heightSlider, SIGNAL(valueChanged(int)), ui->game, SLOT(setFieldHeight(int)));
     connect(ui->intervalSlider, SIGNAL(valueChanged(int)), ui->game, SLOT(setInterval(int)));
-
 
     connect(ui->game, SIGNAL(gameStart(bool)), ui->applyButton, SLOT(setDisabled(bool)));
     connect(ui->game, SIGNAL(gameEnds(bool)), ui->applyButton, SLOT(setEnabled(bool)));
@@ -74,7 +74,7 @@ void MainWindow::saveGame()
     QString filename = QFileDialog::getSaveFileName(this,
                                 tr("Save current game"),
                             QDir::homePath(),
-                                tr("Conway's Game *.life Files (*.life)"));
+                                tr("Conway's Game *.rle Files (*.rle)"));
     if(filename.length() < 1)
         return;
 
@@ -101,7 +101,7 @@ void MainWindow::loadGame()
     QString filename = QFileDialog::getOpenFileName(this,
                                 tr("Open saved game "),
                         QDir::homePath(),
-                                tr("Conway's Game of Life file (*.life)"));
+                                tr("Conway's Game of Life file (*.rle)"));
     if(filename.length() < 1)
         return;
     QFile file(filename);
@@ -111,8 +111,6 @@ void MainWindow::loadGame()
 
     Game::configs conf = ui->game->game.load(in);
     ui->game->update();
-
-
 
     ui->widthSlider->setValue(conf.w);
     ui->heightSlider->setValue(conf.h);
@@ -133,4 +131,3 @@ void MainWindow::loadGame()
 
     file.close();
 }
-

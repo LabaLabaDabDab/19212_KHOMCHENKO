@@ -32,6 +32,8 @@ signals:
     void gameStart(bool ok);
     void heightChanged(int x);
     void widthChanged(int y);
+    void bChanged(int b);
+    void sChanged(int s);
 
 public slots:
     void startGame();

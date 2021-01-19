@@ -222,3 +222,5 @@ int GameWidget::square()
 {
     return (_square ? 1 : 2);
 }
+
+

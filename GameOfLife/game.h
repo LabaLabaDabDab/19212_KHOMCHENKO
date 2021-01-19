@@ -16,7 +16,6 @@ public:
         int r, g, b;
         int t;
         int square;
-
     };
 public:
     Game(std::pair<size_t, size_t> sz = minSize, std::pair<int, int> rg = std::make_pair(2, 3));

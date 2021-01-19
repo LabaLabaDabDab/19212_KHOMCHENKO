@@ -24,7 +24,9 @@ public slots:
     void saveGame();
 
 private slots:
-    void on_rulesButton_clicked(bool checked);
+    void on_pushButton_clicked();
+
+    void on_sButton_valueChanged(int arg1);
 
 private:
     Ui::MainWindow * ui;
