@@ -23,11 +23,6 @@ public slots:
     void loadGame();
     void saveGame();
 
-private slots:
-    void on_pushButton_clicked();
-
-    void on_sButton_valueChanged(int arg1);
-
 private:
     Ui::MainWindow * ui;
     QColor currentColor;
