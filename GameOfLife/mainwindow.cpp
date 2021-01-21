@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget * parent) :
 
 
     connect(ui->StartButton, SIGNAL(clicked()), ui->game, SLOT(startGame()));
-    connect(ui->StopButton, SIGNAL(clicked()), ui->game,SLOT(stopGame()));
-    connect(ui->ClearButton, SIGNAL(clicked()), ui->game,SLOT(clear()));
+    connect(ui->StopButton, SIGNAL(clicked()), ui->game, SLOT(stopGame()));
+    connect(ui->ClearButton, SIGNAL(clicked()), ui->game, SLOT(clear()));
     connect(ui->applyButton, SIGNAL(clicked()), ui->game, SLOT(setParametrs()));
 
     connect(ui->widthSlider, SIGNAL(valueChanged(int)), ui->game, SLOT(setFieldWidth(int)));
@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget * parent) :
 
     connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveGame()));
     connect(ui->loadButton, SIGNAL(clicked()), this, SLOT(loadGame()));
+
+    connect(ui->lineEditB, SIGNAL(textEdited(const QString &)), ui->game, SLOT(setRuleB(const QString &)));
+    connect(ui->lineEditS, SIGNAL(textEdited(const QString &)), ui->game, SLOT(setRuleS(const QString &)));
 }
 
 MainWindow::~MainWindow()
@@ -84,6 +87,8 @@ void MainWindow::saveGame()
 
     Game::configs conf;
 
+    conf.ruleB = ui->lineEditB->text();
+    conf.ruleS = ui->lineEditS->text();
     conf.square = ui->game->square();
     QColor color = ui->game->masterColor();
     conf.r = color.red();
@@ -102,15 +107,28 @@ void MainWindow::loadGame()
                                 tr("Open saved game "),
                         QDir::homePath(),
                                 tr("Conway's Game of Life file (*.rle)"));
-    if(filename.length() < 1)
+    auto split = splitString(filename.toStdString(), '.');
+    if(filename.length() < 1 || split.size() != 2 || split[1] != "rle")
         return;
     QFile file(filename);
     if(!file.open(QIODevice::ReadOnly))
         return;
     QTextStream in(&file);
+    Game::configs conf;
 
-    Game::configs conf = ui->game->game.load(in);
+    try {
+    conf = ui->game->game.load(in);
+    }
+     catch (std::exception &) {
+        file.close();
+        return;
+    }
     ui->game->update();
+
+    ui->lineEditB->setText(conf.ruleB);
+    ui->lineEditS->setText(conf.ruleS);
+    ui->game->setRuleB(conf.ruleB);
+    ui->game->setRuleS(conf.ruleS);
 
     ui->widthSlider->setValue(conf.w);
     ui->heightSlider->setValue(conf.h);
@@ -120,7 +138,7 @@ void MainWindow::loadGame()
     else
         ui->customButton->click();
 
-    currentColor = QColor(conf.r,conf.g,conf.b);
+    currentColor = QColor(conf.r, conf.g, conf.b);
     ui->game->setMasterColor(currentColor);
     QPixmap icon(16, 16);
     icon.fill(currentColor);
@@ -130,4 +148,20 @@ void MainWindow::loadGame()
     ui->game->setInterval(conf.t);
 
     file.close();
+}
+
+std::vector<std::string> MainWindow::splitString(const std::string &str, char ch) {
+    std::vector<std::string> v;
+    size_t pos = str.find(ch);
+    size_t initialPos = 0;
+    std::string substr;
+    while (pos != std::string::npos) {
+        substr = str.substr(initialPos, pos - initialPos);
+        if (!substr.empty()) v.push_back(substr);
+        initialPos = pos + 1;
+        pos = str.find(ch, initialPos);
+    }
+    substr = str.substr(initialPos, std::min(pos, str.size()) - initialPos + 1);
+    if (!substr.empty()) v.push_back(substr);
+    return v;
 }

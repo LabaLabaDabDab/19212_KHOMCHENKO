@@ -4,6 +4,8 @@
 #include <QColor>
 #include <QMainWindow>
 
+#include <QTextStream>
+
 class GameWidget;
 
 namespace Ui {
@@ -26,6 +28,8 @@ public slots:
 private:
     Ui::MainWindow * ui;
     QColor currentColor;
+    std::vector<std::string> splitString(const std::string &str, char ch);
+    bool checkFile(const QTextStream &stream);
 };
 
 #endif // MAINWINDOW_H

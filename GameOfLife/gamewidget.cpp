@@ -24,7 +24,9 @@ GameWidget::GameWidget(QWidget * parent) :
     _width(game.getMinSize().first),
     _height(game.getMinSize().second),
     _changed(false),
-    _square(true)
+    _square(true),
+    _textB("3"),
+    _textS("23")
 {
     timer->setInterval(50);
     connect(timer, SIGNAL(timeout()), this, SLOT(newGeneration()));
@@ -77,6 +79,8 @@ void GameWidget::setParametrs()
    if(_changed) {
         game.setWidth(_width);
         game.setHeight(_height);
+        game.setRuleB(_textB);
+        game.setRuleS(_textS);
         _changed = false;
         game.reset();
         update();
@@ -221,6 +225,16 @@ int GameWidget::minWidth()
 int GameWidget::square()
 {
     return (_square ? 1 : 2);
+}
+
+void GameWidget::setRuleB(const QString & textB){
+    _changed = true;
+    _textB = textB;
+}
+
+void GameWidget::setRuleS(const QString & textS){
+    _changed = true;
+    _textS = textS;
 }
 
 

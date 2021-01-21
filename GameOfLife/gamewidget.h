@@ -56,6 +56,9 @@ public slots:
     QColor masterColor();
     void setMasterColor(const QColor &color);
 
+    void setRuleB(const QString & text);
+    void setRuleS(const QString & text);
+
 protected slots:
     void paintGrid(QPainter & p);
     void paintUniverse(QPainter & p);
@@ -73,6 +76,8 @@ private:
     size_t _height;
     bool _changed;
     bool _square;
+    QString _textB;
+    QString _textS;
 };
 
 #endif // GAMEWIDGET_H

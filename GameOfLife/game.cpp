@@ -7,10 +7,11 @@
 std::pair<size_t, size_t> Game::maxSize = std::make_pair(500,500);
 std::pair<size_t, size_t> Game::minSize = std::make_pair(10,10);
 
-Game::Game(std::pair<size_t, size_t> sz, std::pair<int, int> rg) :
-    size(sz),
-    range(rg)
+Game::Game(std::pair<size_t, size_t> sz) :
+    size(sz)
 {
+    rangeB = {false, false, false, true, false, false, false, false, false};
+    rangeS = {false, false, true, true, false, false, false, false, false};
     universe.resize((size.first) * (size.second));
     generation.resize((size.first) * (size.second));
 }
@@ -54,11 +55,10 @@ bool Game::willAlive(size_t x, size_t y)
     power += universe[prev_y * size.first +  next_x];
     power += universe[next_y * size.first +  prev_x];
     power += universe[next_y * size.first +  next_x];
-    if (!isAlive(x,y) && power == range.second)
+    if (!isAlive(x,y) && rangeB[power])
            return true;
-    if (isAlive(x,y) && power >= range.first && power <= range.second)
+    if (isAlive(x,y) && rangeS[power])
            return true;
-
     return false;
 }
 
@@ -101,11 +101,6 @@ void Game::setCellReverse(size_t x, size_t y)
     universe[y * size.first + x] = !universe[y * size.first + x];
 }
 
-void Game::setRange(std::pair<int, int> newRange)
-{
-    range = newRange;
-}
-
 const std::vector<bool> & Game::getUniverse() const
 {
     return universe;
@@ -114,11 +109,6 @@ const std::vector<bool> & Game::getUniverse() const
 const std::pair<size_t, size_t> & Game::getSize() const
 {
     return size;
-}
-
-const std::pair<int, int> & Game::getRange() const
-{
-    return range;
 }
 
 void Game::setMinSize(std::pair<size_t, size_t> newMin)
@@ -175,9 +165,15 @@ void Game::setDump(const QString & data)
 Game::configs Game::load(QTextStream & in)
 {
     Game::configs par;
-    in >> par.square;
+    par.ruleB = in.readLine();
+    par.ruleS = in.readLine();
+
+    in >> par.square;  
     in >> par.w;
     in >> par.h;
+
+    if (par.square < 0 || par.square > 1 || par.w < 10 || par.w > 500 || par.h < 10 || par.h > 500)
+        throw (std::exception());
 
     size.first = static_cast<size_t>(par.w);
     size.second = static_cast<size_t>(par.h);
@@ -192,14 +188,23 @@ Game::configs Game::load(QTextStream & in)
     setDump(data);
 
     in >> par.r >> par.g >> par.b;
+    if (par.r < 0 || par.r > 255 || par.g < 0 || par.g > 255 || par.b < 0 || par.b > 255)
+        throw (std::exception());
+
     in >> par.t;
+    if (par.t < 50 || par.t > 1000)
+        throw (std::exception());
 
     return par;
 }
 
 void Game::save(QFile & file, const configs & conf)
 {
-    QString buf = QString::number(conf.square) + "\n";
+    QString buf = conf.ruleB + "\n" + conf.ruleS + "\n";
+    file.write(buf.toUtf8());
+    buf.clear();
+
+    buf = QString::number(conf.square) + "\n";
     file.write(buf.toUtf8());
 
     buf.clear();
@@ -224,3 +229,26 @@ void Game::save(QFile & file, const configs & conf)
     buf = QString::number(conf.t) + "\n";
     file.write(buf.toUtf8());
 }
+
+void Game::setRuleB(QString B){
+    for (int i = 0; i < 9; i++){
+        rangeB[i] = false;
+    }
+    for (char c: B.toStdString()){
+        if (c >= '0' && c <= '9') {
+            rangeB[static_cast<int>( c - '0')] = true;
+        }
+    }
+}
+
+void Game::setRuleS(QString S){
+    for (int i = 0; i < 9; i++){
+        rangeS[i] = false;
+    }
+    for (char c: S.toStdString()){
+        if (c >= '0' && c <= '9') {
+            rangeS[static_cast<int>( c - '0')] = true;
+        }
+    }
+}
+

@@ -16,9 +16,10 @@ public:
         int r, g, b;
         int t;
         int square;
+        QString ruleB, ruleS;
     };
 public:
-    Game(std::pair<size_t, size_t> sz = minSize, std::pair<int, int> rg = std::make_pair(2, 3));
+    Game(std::pair<size_t, size_t> sz = minSize);
     ~Game() {}
 
     bool newGenerate();
@@ -48,13 +49,16 @@ public:
     static void setMinSize(std::pair<size_t, size_t> newMin);
     static void setMaxSize(std::pair<size_t, size_t> newMax);
 
+    void setRuleB(QString B);
+    void setRuleS(QString S);
 private:
 
     static std::pair<size_t, size_t> maxSize;
     static std::pair<size_t, size_t> minSize;
 
     std::pair<size_t, size_t> size;
-    std::pair<int, int> range;
+    std::vector<bool> rangeB;
+    std::vector<bool> rangeS;
     std::vector<bool> universe;
     std::vector<bool> generation;
 
