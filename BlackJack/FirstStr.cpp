@@ -13,7 +13,7 @@ namespace {
 
 Decision FirstStr::decide(const StackCard & stack, const std::vector<Card> & front, const std::vector<Decision> & decisions) {
 	getScore(stack);
-	unsigned int aaa = StrategyImp::score;
+	unsigned int aaa = score;
 	return ((aaa < 17u) ?  Decision::NEXT : Decision::STOP);
 }
 

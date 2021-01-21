@@ -12,7 +12,7 @@ namespace {
 
 Decision SecondStr::decide(const StackCard & stack, const std::vector<Card> & front, const std::vector<Decision> & decisions) {
 	getScore(stack);
-	return ((StrategyImp::score < 16u && StrategyImp::score > 2u) ? Decision::NEXT : Decision::STOP);
+	return ((score < 16u && score > 2u) ? Decision::NEXT : Decision::STOP);
 }
 std::string SecondStr::getName() {
 	return name;

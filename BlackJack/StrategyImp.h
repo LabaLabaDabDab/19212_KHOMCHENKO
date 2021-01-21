@@ -7,11 +7,12 @@
 
 class StrategyImp : public Strategy {
 public:
-	unsigned int score = 0u;
-	unsigned char number = 0u;
 	std::string path;
-	
 	virtual ~StrategyImp() {}
 	void getScore(const StackCard & stack) { score = stack.score(); }
+
+protected:
+    unsigned int score = 0u;
+    unsigned char number = 0u;
 };
 #endif

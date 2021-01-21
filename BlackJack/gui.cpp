@@ -80,3 +80,29 @@ void Gui::TourneyResults(const std::vector<unsigned char> & results) const {
 			winners.back() + 1u << ". " << std::endl;
 	}
 }
+
+void Gui::PressTurn() const {
+    std::cout << "Press any key to continue..." << std::endl;
+}
+
+void Gui::LostTurn() const {
+    std::cout << "All strategies lost the game." << std::endl;
+}
+
+void Gui::CoutWinners(unsigned int championNumber) const {
+    std::cout << "Strategy number " << championNumber + 1u << " won the game." << std::endl;
+}
+
+void Gui::DrawTurn() const {
+    std::cout << "Drawn game! At least two strategies scored equal score!" << std::endl;
+}
+
+void Gui::Start() const {
+    std::cout << "This is a programm for simulating 'BlackJack' game." << std::endl;
+}
+
+void Gui::CountStr() const {
+    std::cout << "Received to few strategies to play in this (tournament) mode. " <<
+              "Game stoped." << std::endl;
+    return;
+}

@@ -76,8 +76,7 @@ void Game::Turn() {
 	for (i = 0u; i < configs.countStr; i++) {
 		if (decisions[i] == Decision::NEXT) {
 			if (configs.gMod == GameMode::DETAILED)
-				std::cout << "Press any key to continue..." << std::endl;
-
+			    gui->PressTurn();
 			return;
 		}
 	}
@@ -86,9 +85,7 @@ void Game::Turn() {
 
 void Game::Tournament() {
 	if (configs.countStr < 3) {
-		std::cout << "Received to few (" << configs.countStr << ") strategies to play in this (tournament) mode. " <<
-			"Game stoped." << std::endl;
-		return;
+	    gui->CountStr();
 	}
 	size_t tmp = 0u, i = 0u, j = 0u;
 	try {
@@ -166,15 +163,14 @@ void Game::ResultsCalculating() {
 		}
 	}
 	if (stackcard[championNumber].score() > 21u) {
-		std::cout << "All strategies lost the game." << std::endl;
+		gui->LostTurn();
 		gui->Results();
 		return;
 	}
 	if (flag == 0)
-		std::cout << "Strategy number " << championNumber + 1u << " won the game." << std::endl;
+	    gui->CoutWinners(championNumber);
 	else
-		std::cout << "Drawn game! At least two strategies scored equal score!" << std::endl;
-
+		gui->DrawTurn();
 	gui->Results();
 }
 
@@ -184,7 +180,7 @@ std::vector<unsigned char> Game::getWinners(){
     for (size_t i = 0u; i < configs.countStr - 1u; i++) {
         for (size_t j = i + 1u; j < configs.countStr; j++) {
             auto tmp = Pair(i, j);
-            matrix[i * configs.countStr + j] = matrix[j*configs.countStr + i] = static_cast<unsigned char>(tmp);
+            matrix[i * configs.countStr + j] = matrix[ j * configs.countStr + i] = static_cast<unsigned char>(tmp);
             results[tmp]++;
         }
     }

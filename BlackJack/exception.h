@@ -3,14 +3,6 @@
 #include <exception>
 #include <iostream>
 
-class BadArguments : public std::exception {
-public:
-	int what() {
-		std::cout << "Undefined strategy ID" << std::endl;
-		return 0;
-	}
-};
-
 class StrSettingError : public std::exception {
 public:
 	int what() {
@@ -19,4 +11,21 @@ public:
 		return 0;
 	}
 };
+
+class BadInput : public std::exception {
+public:
+    int what() {
+        std::cout << "Bad input" << std::endl;
+        return 1;
+    }
+};
+
+class BadStr : public std::exception {
+public:
+    int what() {
+        std::cerr << " Too few strategies identified, impossible to continue the game" << std::endl;
+        return 0;
+    }
+};
+
 #endif
