@@ -1,0 +1,8 @@
+ru/nsu/khomchenko/ConfigCommandRepositoryTest.java
+ ru.nsu.khomchenko.ConfigCommandRepositoryTest
+ ru.nsu.khomchenko.MockClassResolver
+ ru.nsu.khomchenko.MockTableLoader
+ru/nsu/khomchenko/MachineTest.java
+ ru.nsu.khomchenko.MachineTest
+ ru.nsu.khomchenko.MockCommandRepository
+ ru.nsu.khomchenko.MockProgramLoader

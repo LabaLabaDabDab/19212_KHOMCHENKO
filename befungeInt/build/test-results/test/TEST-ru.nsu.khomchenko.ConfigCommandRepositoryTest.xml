@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.nsu.khomchenko.ConfigCommandRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-03-24T03:41:58" hostname="LAPTOP-0N6FK2US" time="0.192">
+  <properties/>
+  <testcase name="getCommandForSymbol()" classname="ru.nsu.khomchenko.ConfigCommandRepositoryTest" time="0.192"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

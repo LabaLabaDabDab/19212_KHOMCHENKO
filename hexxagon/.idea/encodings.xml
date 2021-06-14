@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/AIPlayer.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Assets.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Board.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Cells.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Chip.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/DrawableEntity.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Game.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Highlight.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Move.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Point.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/nsu/khomchenko/hexxagon/Program.java" charset="windows-1251" />
+  </component>
+</project>

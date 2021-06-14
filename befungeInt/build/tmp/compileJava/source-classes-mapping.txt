@@ -1,0 +1,65 @@
+ru/nsu/khomchenko/ConfigException.java
+ ru.nsu.khomchenko.ConfigException
+ru/nsu/khomchenko/ProgramException.java
+ ru.nsu.khomchenko.ProgramException
+ru/nsu/khomchenko/MovingDirection.java
+ ru.nsu.khomchenko.MovingDirection
+ru/nsu/khomchenko/FileProgramLoader.java
+ ru.nsu.khomchenko.FileProgramLoader
+ru/nsu/khomchenko/IProgramLoader.java
+ ru.nsu.khomchenko.IProgramLoader
+ru/nsu/khomchenko/FileTableLoader.java
+ ru.nsu.khomchenko.FileTableLoader
+ru/nsu/khomchenko/ReflectionCachedClassResolver.java
+ ru.nsu.khomchenko.ReflectionCachedClassResolver
+ru/nsu/khomchenko/Main.java
+ ru.nsu.khomchenko.Main
+ru/nsu/khomchenko/ITableLoader.java
+ ru.nsu.khomchenko.ITableLoader
+ru/nsu/khomchenko/IClassResolver.java
+ ru.nsu.khomchenko.IClassResolver
+ru/nsu/khomchenko/commands/CommandCompare.java
+ ru.nsu.khomchenko.commands.CommandCompare
+ru/nsu/khomchenko/Command.java
+ ru.nsu.khomchenko.Command
+ru/nsu/khomchenko/Position.java
+ ru.nsu.khomchenko.Position
+ru/nsu/khomchenko/commands/CommandLogicalNot.java
+ ru.nsu.khomchenko.commands.CommandLogicalNot
+ru/nsu/khomchenko/commands/CommandToggleStringMode.java
+ ru.nsu.khomchenko.commands.CommandToggleStringMode
+ru/nsu/khomchenko/commands/CommandRead.java
+ ru.nsu.khomchenko.commands.CommandRead
+ru/nsu/khomchenko/IMachineState.java
+ ru.nsu.khomchenko.IMachineState
+ru/nsu/khomchenko/commands/CommandGet.java
+ ru.nsu.khomchenko.commands.CommandGet
+ru/nsu/khomchenko/commands/CommandStop.java
+ ru.nsu.khomchenko.commands.CommandStop
+ru/nsu/khomchenko/commands/CommandStackOperations.java
+ ru.nsu.khomchenko.commands.CommandStackOperations
+ru/nsu/khomchenko/commands/CommandNoOp.java
+ ru.nsu.khomchenko.commands.CommandNoOp
+ru/nsu/khomchenko/commands/CommandDigit.java
+ ru.nsu.khomchenko.commands.CommandDigit
+ru/nsu/khomchenko/commands/CommandPut.java
+ ru.nsu.khomchenko.commands.CommandPut
+ru/nsu/khomchenko/Machine.java
+ ru.nsu.khomchenko.Machine
+ ru.nsu.khomchenko.Machine$1
+ru/nsu/khomchenko/commands/CommandChangeDirection.java
+ ru.nsu.khomchenko.commands.CommandChangeDirection
+ru/nsu/khomchenko/commands/CommandPrint.java
+ ru.nsu.khomchenko.commands.CommandPrint
+ru/nsu/khomchenko/commands/CommandCondition.java
+ ru.nsu.khomchenko.commands.CommandCondition
+ru/nsu/khomchenko/commands/CommandArithmetic.java
+ ru.nsu.khomchenko.commands.CommandArithmetic
+ru/nsu/khomchenko/ICommandRepository.java
+ ru.nsu.khomchenko.ICommandRepository
+ru/nsu/khomchenko/ConfigCommandRepository.java
+ ru.nsu.khomchenko.ConfigCommandRepository
+ru/nsu/khomchenko/MachineState.java
+ ru.nsu.khomchenko.MachineState
+ru/nsu/khomchenko/commands/CommandBridge.java
+ ru.nsu.khomchenko.commands.CommandBridge
