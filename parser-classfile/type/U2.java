@@ -12,7 +12,6 @@ public class U2 { //двух байтовые
 
     public static int read(InputStream inputStream) {
         // bytes хранит два байта в виде буферизованного массива
-        //Символы в файле class кодируются в U-16
         byte[] bytes = new byte[2];
         try {
             inputStream.read(bytes);
